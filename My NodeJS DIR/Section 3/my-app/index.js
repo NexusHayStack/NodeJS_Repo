@@ -39,20 +39,44 @@ var server = http.createServer(function(req,res){
 	});
 
 	// Stop the binding on the end of the stream
-	req.on('end', function(){						/* This call back stops appending the string when the 'end' event of the stream is detected*/
+	req.on('end', function(){						/* This function stops appending the string when the 'end' event of the stream is detected, i.e. it will be executed weather there is a payload or not*/
 		buffer += decoder.end();
 
-		// Send the response
-		res.end("Hello World\n");
+		// Choose the handler this request should go to. If one is not found, use the notFound handler.
+		var chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
 
-		// Log the requested payload
-	console.log('Request received with payload: '+buffer);
+		// Construct the data object to send to the handler
+		var data = {
+			'trimmedPath' : trimmedPath,
+			'queryStringObject' : queryStringObject,
+			'method' : method,
+			'headers' : headers,
+			'payload' : buffer
+		};
+
+		// Route the request to the handler specified in the router
+		chosenHandler(data,function(statusCode,payload){
+			//Use the status code called back by the handler, or default to 200
+			statusCode = typeof(statusCode) == 'number' ? statusCode : 200;
+
+			// Use the payload called back by the handler, or default to an empty object
+			payload = typeof(payload) == 'object' ? payload : {};
+			
+			//Convert the payload to a string
+			var payloadString = JSON.stringify(payload);
+
+			// Send the response
+			res.writeHead(statusCode);
+			res.end(payloadString);
+
+			// Log the requested payload
+			console.log('Returning this response: ',statusCode,payloadString);
+		});
+
+		
 	});
 
 	
-
-	// Log the requested path
-	console.log('Request received on path: '+trimmedPath+ ' with the method: '+method+ 'with these query string parameters: ', queryStringObject,' and headers ', headers);
 });
 
 
@@ -60,3 +84,22 @@ var server = http.createServer(function(req,res){
 server.listen(3000,function(){
 	console.log("The Server is now listening on port 3000.");
 });
+
+//Define the handlers
+var handlers = {};
+
+//Sample handler
+handlers.sample = function(data,callback){
+	// Callback a http status code, and a payload object
+	callback(406,{'name' : 'sample handler'});
+};
+
+// Not found handler
+handlers.notFound = function(data,callback){
+	callback(404);
+};
+
+// Define a request router
+var router = {
+	'sample' : handlers.sample
+}

@@ -9,12 +9,19 @@ var https = require('https');
 var url = require('url');
 var config = require('./config');
 var fs = require('fs');
+var _data = require('./lib/data');
 var StringDecoder = require('string_decoder').StringDecoder;
 /* string_decoder is a vast lib. we need 			^
  * a fraction of that and string_decoder			|
  * parameter contains the functions we need ---------
  */
 
+
+// TESTING
+// @TODO delete this
+_data.create('test','newFile',{'foo' : 'bar'},function(err){
+	console.log('this was the error', err);
+});
 
 // Instantiate the HTTP server
 var httpServer = http.createServer(function(req,res){

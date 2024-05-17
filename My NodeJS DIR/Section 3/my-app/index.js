@@ -19,8 +19,8 @@ var StringDecoder = require('string_decoder').StringDecoder;
 
 // TESTING
 // @TODO delete this
-_data.read('test','newFile1',function(err,data){
-	console.log('this was the error', err, ' and this was the data:',data);
+_data.update('test','newFile',{'vision' : 'rizz'},function(err,data){
+	console.log('this was the error', err);
 });
 
 // Instantiate the HTTP server

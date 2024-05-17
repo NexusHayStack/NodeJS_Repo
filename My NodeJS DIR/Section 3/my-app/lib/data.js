@@ -52,7 +52,38 @@ lib.read = function(dir,file,callback){
 }
 
 
+// Update data inside a file
+lib.update = function(dir,file,data,callback){
+	// Open the file for writing
+	fs.open(lib.baseDir+dir+'/'+file+'.json','r+',function(err,fileDescriptor){		// 'r+' switch opens the file to write (but errors out when the file does NOT EXISTS) while in 'wx' it errors out when file does EXISTS
+		if(!err && fileDescriptor){
+			// Convert data to string
+			var stringData = JSON.stringify(data);
 
+			//Truncate the file
+			fs.ftruncate(fileDescriptor,function(err){
+				if(!err){
+					// Write to the file and close it
+					fs.writeFile(fileDescriptor,stringData,function(err){
+						if(!err){
+							fs.close(fileDescriptor,function(err){
+								if(!err){
+									callback(false);
+								} else {
+									callback('Error closing existing file');
+								}
+							});
+						} else {
+							callback('Error writing to existing file');
+						}
+					});
+				} else {
+					callback('Error truncating file');
+				}
+			});
+		}
+	});
+}
 
 
 

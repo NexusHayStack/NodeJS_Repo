@@ -81,6 +81,8 @@ lib.update = function(dir,file,data,callback){
 					callback('Error truncating file');
 				}
 			});
+		} else {
+			callback('Could not open the file for updating. It may not exist yet.');
 		}
 	});
 }

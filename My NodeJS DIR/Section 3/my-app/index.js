@@ -19,7 +19,7 @@ var StringDecoder = require('string_decoder').StringDecoder;
 
 // TESTING
 // @TODO delete this
-_data.update('test','newFile',{'vision' : 'rizz'},function(err,data){
+_data.delete('test','newFile',function(err){
 	console.log('this was the error', err);
 });
 

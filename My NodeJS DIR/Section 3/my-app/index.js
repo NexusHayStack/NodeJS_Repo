@@ -7,7 +7,10 @@
 var http = require('http');
 var https = require('https');
 var url = require('url');
-var config = require('./config');
+var config = require('./lib/config');
+var handlers = require('./lib/handlers');
+var helpers = require('./lib/helpers')
+var fs = require('fs');
 var StringDecoder = require('string_decoder').StringDecoder;
 /* string_decoder is a vast lib. we need 			^
  * a fraction of that and string_decoder			|
@@ -54,7 +57,7 @@ var unifiedServer = function(req,res){
 	var queryStringObject = parsedUrl.query;
 
 	// Get the HTTP Method
-	var method = req.method.toUpperCase();
+	var method = req.method.toLowerCase();
 
 	// Get the headers as an object 
 	var headers = req.headers;
@@ -65,7 +68,7 @@ var unifiedServer = function(req,res){
 	req.on('data', function(data){					/* takes the 'data', when 'data' event is emitted by the 'req' object, and plug it in a call back function */
 		buffer += decoder.write(data);			    /* appending the stream of decoded 'data' to buffer "bit-by-bit"*/
 	});
-
+	
 	// Stop the binding on the end of the stream
 	req.on('end', function(){						/* This function stops appending the string when the 'end' event of the stream is detected, i.e. it will be executed weather there is a payload or not*/
 		buffer += decoder.end();
@@ -79,9 +82,9 @@ var unifiedServer = function(req,res){
 			'queryStringObject' : queryStringObject,
 			'method' : method,
 			'headers' : headers,
-			'payload' : buffer
+			'payload' : helpers.parseJsonToObject(buffer)
 		};
-
+		
 		// Route the request to the handler specified in the router
 		chosenHandler(data,function(statusCode,payload){
 			//Use the status code called back by the handler, or default to 200
@@ -90,6 +93,7 @@ var unifiedServer = function(req,res){
 			// Use the payload called back by the handler, or default to an empty object
 			payload = typeof(payload) == 'object' ? payload : {};
 			
+
 			//Convert the payload to a string
 			var payloadString = JSON.stringify(payload);
 
@@ -100,7 +104,7 @@ var unifiedServer = function(req,res){
 			res.end(payloadString);
 
 			// Log the requested payload
-			console.log('Returning this response: ',statusCode,payloadString);
+			console.log(trimmedPath,statusCode);
 		});
 
 		
@@ -109,19 +113,10 @@ var unifiedServer = function(req,res){
 	
 };
 
-//Define the handlers
-var handlers = {};
-// Ping Handler
-handlers.ping = function(data,callback){
-	callback(200);
-};
 
-// Not found handler
-handlers.notFound = function(data,callback){
-	callback(404);
-};
 
 // Define a request router
 var router = {
-	'ping' : handlers.ping
+	'ping' : handlers.ping,
+	'users' : handlers.users
 }

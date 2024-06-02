@@ -307,7 +307,26 @@ handlers._tokens.put = function(data,callback){
 // Riquired data: id
 // Optional data: none
 handlers._tokens.delete = function(data,callback){
-	
+	// Check that the id is valid
+	var id = typeof(data.queryStringObject.id) == 'string' && data.queryStringObject.id.trim().length == 20 ? data.queryStringObject.id.trim() : false;
+	if(id){
+		// Lookup the token
+		_data.read('tokens',id,function(err,data){
+			if(!err && data){
+				_data.delete('tokens',id,function(err){
+					if(!err){
+						callback(200);
+					} else{
+						callback(500,{'Error' : 'Could not delete the specified token'})
+					}
+				});
+			} else {
+				callback(404);
+			}
+		});
+	} else {
+		callback(400,{'Error' : 'Missing required field'});
+	}
 };
 
 module.exports = handlers

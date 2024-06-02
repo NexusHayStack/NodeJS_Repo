@@ -142,7 +142,7 @@ handlers._users.put = function(data,callback){
 						userData.lastName = lastName;
 					}
 					if (password) {
-						userData.hashedPassword = helpers.hashe(password); 
+						userData.hashedPassword = helpers.hash(password); 
 					}
 					// Store the new updates
 					_data.update('users',phone,userData,function(err){
@@ -184,7 +184,6 @@ handlers._users.delete = function(data,callback){
 						callback(500,{'Error' : 'Could not delete the specified user'})
 					}
 				});
-				callback(200,data);
 			} else {
 				callback(404);
 			}
@@ -223,7 +222,7 @@ handlers._tokens.post = function(data,callback){
 					// If valid, create a new token with a random name. Set an expiration date 1 hour in the future
 					var tokenId = helpers.createRandomString(20);
 
-					var expires = Date.now() + 1000*60*60;
+					var expires = Date.now() + 1000 * 60 * 60;
 					var tokenObject = {
 						'phone' : phone,
 						'id' : tokenId,
@@ -270,13 +269,45 @@ handlers._tokens.get = function(data,callback){
 	}
 };
 // Tokens - put
+// Required data: id, extend
+// Optional data: none
 handlers._tokens.put = function(data,callback){
+	var id = typeof(data.payload.id) == 'string' && data.payload.id.trim().length == 20 ? data.payload.id.trim() : false;
+  	var extend = typeof(data.payload.extend) == 'boolean' && data.payload.extend == true ? true : false;
+  	if(id && extend){
+    	// Lookup the existing token
+    	_data.read('tokens',id,function(err,tokenData){
+      	if(!err && tokenData){
+        	// Check to make sure the token isn't already expired
+        	if(tokenData.expires > Date.now()){
+          		// Set the expiration an hour from now
+          		tokenData.expires = Date.now() + 1000 * 60 * 60;
+          		// Store the new updates
+          		_data.update('tokens',id,tokenData,function(err){
+            		if(!err){
+              			callback(200);
+            		} else {
+              			callback(500,{'Error' : 'Could not update the token\'s expiration.'});
+            		}
+          		});
+        	} else {
+          	callback(400,{'Error' : 'The token has already expired, and cannot be extended.'});
+        		}
+      	} else {
+        	callback(400,{'Error' : 'Specified user does not exist.'});
+      		}
+    	});
+  	} else {
+    	callback(400,{'Error': 'Missing required field(s) or field(s) are invalid.'});
+  		}
+};	
 
-};
 
 // Tokens - delete
+// Riquired data: id
+// Optional data: none
 handlers._tokens.delete = function(data,callback){
-
+	
 };
 
 module.exports = handlers

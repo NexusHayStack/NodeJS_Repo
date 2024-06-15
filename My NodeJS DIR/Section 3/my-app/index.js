@@ -17,6 +17,10 @@ var StringDecoder = require('string_decoder').StringDecoder;
  * parameter contains the functions we need ---------
  */
 
+// @TODO GET RID OF THIS
+helpers.sendTwilioSms('7845934678','Hello!',function(err){
+	console.log('this was the error',err);
+});
 
 // Instantiate the HTTP server
 var httpServer = http.createServer(function(req,res){

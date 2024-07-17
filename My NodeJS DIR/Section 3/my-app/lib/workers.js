@@ -157,6 +157,10 @@ workers.processCheckOutcome = function(originalCheckData,checkOutcome){
 	newCheckData.state = state;
 	newCheckData.lastChecked = Date.now();
 
+	// Mask the phone number and send it to the error message
+	var phoneNumber = newCheckData.userPhone;
+	var maskedPhoneNumber = phoneNumber.slice(0, -4).padEnd(phoneNumber.length, '*');
+
 	// Save the updates
 	_data.update('checks',newCheckData.id,newCheckData,function(err){
 		if(!err){
@@ -168,7 +172,7 @@ workers.processCheckOutcome = function(originalCheckData,checkOutcome){
 			}
 
 		} else {
-			console.log('Error trying to save update of one of the checks ${newCheckData.id} for the user ${maskedPhoneNumber}');
+			console.log('Error trying to save update of one of the checks ${'+newCheckData.id+'} for the user ${'+maskedPhoneNumber+'}');
 		}
 	});
 	
@@ -177,11 +181,16 @@ workers.processCheckOutcome = function(originalCheckData,checkOutcome){
 // Alert the user as to a change in their check status
 workers.alertUserToStatusChange = function(newCheckData){
 	var msg = 'Alert: The check for '+newCheckData.method.toUpperCase()+' '+newCheckData.protocol+'://'+newCheckData.url+' is currently '+newCheckData.state;
+
+	// Mask the phone number and send it to the error message
+	var phoneNumber = newCheckData.userPhone;
+	var maskedPhoneNumber = phoneNumber.slice(0, -4).padEnd(phoneNumber.length, '*');
+
 	helpers.sendTwilioSms(newCheckData.userPhone,msg,function(err){
 		if(!err){
 			console.log("Success: User was alerted of the change in their check, via an SMS:\n",msg)
 		} else{
-			console.log('Error sending SMS to the user with state change in their check')
+			console.log('Error sending SMS to the user ${'+maskedPhoneNumber+'} with state change in their check ${'+newCheckData.id+'}')
 		}
 	});
 };

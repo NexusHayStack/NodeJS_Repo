@@ -1,1 +1,1 @@
-{"id":"bjl00oqlbmuuv0gxvwbj","userPhone":"7845374836","protocol":"http","url":"google.com","method":"post","successCodes":[200,201],"timeoutSeconds":3}
+{"id":"bjl00oqlbmuuv0gxvwbj","userPhone":"7845374836","protocol":"http","url":"google.com","method":"post","successCodes":[200,201,301,302,405],"timeoutSeconds":3,"state":"up","lastChecked":1721194473229}

@@ -67,7 +67,7 @@ lib.update = function(dir,file,data,callback){
 			var stringData = JSON.stringify(data);
 
 			//Truncate the file
-			fs.truncate(fileDescriptor,function(err){
+			fs.ftruncate(fileDescriptor,function(err){
 				if(!err){
 					// Write to the file and close it
 					fs.writeFile(fileDescriptor,stringData,function(err){
@@ -101,6 +101,26 @@ lib.delete = function(dir,file,callback){
 		callback(err);
 	});
 };
+
+
+// List all the items in a directory
+lib.list = function(dir,callback){
+	fs.readdir(lib.baseDir+dir+'/',function(err,data){
+		if(!err && data && data.length > 0){
+			var trimmedFileNames = [];
+			data.forEach(function(fileName){
+				trimmedFileNames.push(fileName.replace('.json',''));
+			});
+			callback(false,trimmedFileNames);
+		} else {
+			callback(err,data);;
+		}
+	});
+};
+
+
+
+
 
 // Export the module
 module.exports = lib;

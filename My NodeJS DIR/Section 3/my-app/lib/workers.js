@@ -55,6 +55,9 @@ workers.validateCheckData = function(originalCheckData){
 	originalCheckData.method = typeof(originalCheckData.method) == 'string' && ['post','get','put','delete'].indexOf(originalCheckData.method) > -1 ? originalCheckData.method : false;
 	originalCheckData.successCodes = typeof(originalCheckData.successCodes) == 'object' && originalCheckData.successCodes instanceof Array && originalCheckData.successCodes.length > 0 ? originalCheckData.successCodes : false;
 	originalCheckData.timeoutSeconds = typeof(originalCheckData.timeoutSeconds) == 'number' && originalCheckData.timeoutSeconds % 1 === 0 && originalCheckData.timeoutSeconds >= 1 && originalCheckData.timeoutSeconds <= 5 ? originalCheckData.timeoutSeconds : false;
+	/**IMPORTANT* If a variable, say 'id' is a string it's length is given by 'id.trim().length' 
+	 * and if it is of an object type, say 'childrenInMyBasement' also of which is an instance of 'Array' object 
+	 * the length/size (number of elements in the array) is given by 'childrenInMyBasement.length'*/
 
 	// Set the keys that may not be set (if the workers have never seen this check before)
 	originalCheckData.state = typeof(originalCheckData.state) == 'string' && ['up','down'].indexOf(originalCheckData.state) > -1 ? originalCheckData.state : 'down';

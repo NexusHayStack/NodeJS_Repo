@@ -42,7 +42,7 @@ server.httpsServer = https.createServer(server.httpsServerOptions,function(req,r
 server.unifiedServer = function(req,res){
 	
 	// Get the URL and parse it
-	var parsedUrl = url.parse(req.url,true);
+	var parsedUrl = url.parse(req.url,true);	/* The 'true' value tells the parse function to also add 'query' and return 'parsedUrl.query' as a queryString Object */
 
 	// Get the path
 	var path = parsedUrl.pathname;

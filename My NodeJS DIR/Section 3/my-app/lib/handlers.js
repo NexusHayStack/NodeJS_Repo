@@ -23,7 +23,7 @@ handlers.notFound = function(data,callback){
 
 
 // Users
-handlers.users = function(data,callback){
+handlers.users = function(data,callback){						/*BTW This function is called by 'chosenHandler(data,callback)' from the server.js in case of any confusion*/
 	var acceptableMethods = ['post','get','put','delete'];
 	if(acceptableMethods.indexOf(data.method) > -1){
 		handlers._users[data.method](data,callback);	
@@ -101,7 +101,7 @@ handlers._users.get = function(data,callback){
 	if(phone){
 		
 		// Get the token from the headers
-		var token = typeof(data.headers.token) !== 'undefined' ? data.headers.token : false;
+		var token = typeof(data.headers.token) !== 'undefined' ? data.headers.token : false;			/* **VERY IMPORTANT** The 'data.headers.token' has to be sent from the requestor, from the API, to authenticate the user as a valid requestor*/
 		// Verify that the given token is valid for the phone number
 		handlers._tokens.verifyToken(token,phone,function(tokenIsValid){
 			if(tokenIsValid){

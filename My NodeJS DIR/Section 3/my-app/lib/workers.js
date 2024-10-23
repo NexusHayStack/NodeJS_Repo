@@ -14,7 +14,8 @@ var http = require('http');
 var helpers = require('./helpers');
 var url = require('url');
 var _logs = require('./logs');
-
+var util = require('util');
+var debug = util.debuglog('workers');
 
 // Instantiate the worker object
 var workers = {};
@@ -33,14 +34,14 @@ workers.gatherAllChecks = function(){
 						// Pass it to the check validator, and let that function to continue or log errors as needed
 						workers.validateCheckData(originalCheckData);
 					} else {
-						console.log("Error reading one of the check's data");
+						debug("Error reading one of the check's data");
 					}
 				});
 			});
 		} else {
 			// There is no requester for the gatherAllChecks but it is just a background worker requiring no callback
 			// So we are just going to log it out on the terminal.
-			console.log("Error: Could not find any checks to process")
+			debug("Error: Could not find any checks to process")
 		}
 	});
 };
@@ -73,7 +74,7 @@ workers.validateCheckData = function(originalCheckData){
 	originalCheckData.timeoutSeconds){
 		workers.performCheck(originalCheckData);
 	} else {
-		console.log("Error: One of the checks is not properly formatted. Skipping it.")
+		debug("Error: One of the checks is not properly formatted. Skipping it.")
 	}
 };
 
@@ -175,11 +176,11 @@ workers.processCheckOutcome = function(originalCheckData,checkOutcome){
 			if(alertWanted){
 				workers.alertUserToStatusChange(newCheckData);
 			} else{
-				console.log('Check outcome has not changed, no alert needed');
+				debug('Check outcome has not changed, no alert needed');
 			}
 
 		} else {
-			console.log('Error trying to save update of one of the checks ${'+newCheckData.id+'} for the user ${'+maskedPhoneNumber+'}');
+			debug('Error trying to save update of one of the checks ${'+newCheckData.id+'} for the user ${'+maskedPhoneNumber+'}');
 		}
 	});
 	
@@ -195,9 +196,9 @@ workers.alertUserToStatusChange = function(newCheckData){
 
 	helpers.sendTwilioSms(newCheckData.userPhone,msg,function(err){
 		if(!err){
-			console.log("Success: User was alerted of the change in their check, via an SMS:\n",msg)
+			debug("Success: User was alerted of the change in their check, via an SMS:\n",msg)
 		} else{
-			console.log('Error sending SMS to the user ${'+maskedPhoneNumber+'} with state change in their check ${'+newCheckData.id+'}')
+			debug('Error sending SMS to the user ${'+maskedPhoneNumber+'} with state change in their check ${'+newCheckData.id+'}')
 		}
 	});
 };
@@ -221,9 +222,9 @@ workers.log = function(originalCheckData,checkOutcome,state,alertWanted,timeOfCh
 	//Append the log string to the file
 	_logs.append(logFileName,logString,function(err){
 		if(!err){
-			console.log('Logging to file succeeded');
+			debug('Logging to file succeeded');
 		} else {
-			console.log('Logging to file failed');
+			debug('Logging to file failed');
 		}
 	});
 };
@@ -250,18 +251,18 @@ workers.rotateLogs = function(){
 						// Truncate the log
 						_logs.truncate(logId,function(err){
 							if(!err){
-								console.log("Success truncating logFile");
+								debug("Success truncating logFile");
 							} else {
-								console.log("Error truncating logFile");
+								debug("Error truncating logFile");
 							}
 						});
 					} else {
-						console.log("Error compressing one of the log files",err);
+						debug("Error compressing one of the log files",err);
 					}
 				});
 			});
 		} else {
-			console.log("Error: Could not find any logs to rotate");
+			debug("Error: Could not find any logs to rotate");
 		}
 	});
 };
@@ -277,7 +278,11 @@ workers.logsRotationLoop = function(){
 
 // Init script
 workers.init = function(){
+
 	console.log('Initializing...');
+	// Send to console, in green
+	console.log('\x1b[32m%s\x1b[0m','Background workers are now running');
+	
 	// Exectute all the checks immediately
 	workers.gatherAllChecks();
 

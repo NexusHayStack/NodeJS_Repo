@@ -17,6 +17,8 @@ var StringDecoder = require('string_decoder').StringDecoder;
  * parameter contains the functions we need ---------
  */
 var path = require('path');
+var util = require('util');
+var debug = util.debuglog('server');
 
 // Instantiate the server module object
 var server = {};
@@ -99,7 +101,16 @@ server.unifiedServer = function(req,res){
 			res.end(payloadString);
 
 			// Log the requested payload
-			console.log(trimmedPath,statusCode);
+			debug(trimmedPath,statusCode);
+
+			// Log the requested path
+			// If the response is 200, print green otherwise print red
+			if(statusCode == 200){
+				debug('\x1b[32m%s\x1b[0m','Returning this response: '+method.toUpperCase()+' /'+trimmedPath+' '+statusCode,payloadString);
+			} else {
+				debug('\x1b[31m%s\x1b[0m','Returning this response: '+method.toUpperCase()+' /'+trimmedPath+' '+statusCode,payloadString);
+			}
+			
 		});
 
 		
@@ -122,12 +133,12 @@ server.router = {
 server.init = function(){
 	// Start the HTTP server
 	server.httpServer.listen(config.httpPort,function(){
-		console.log("The Server is now listening on port " +config.httpPort+ " in " +config.envName+ " mode");
+		console.log('\x1b[36m%s\x1b[0m',"The Server is now listening on port " +config.httpPort+ " in " +config.envName+ " mode");
 	});
 
 	// Start the HTTPS server
 	server.httpsServer.listen(config.httpsPort,function(){
-		console.log("The Server is now listening on port " +config.httpsPort+ " in " +config.envName+ " mode");
+		console.log('\x1b[35m%s\x1b[0m',"The Server is now listening on port " +config.httpsPort+ " in " +config.envName+ " mode");
 	});
 
 };

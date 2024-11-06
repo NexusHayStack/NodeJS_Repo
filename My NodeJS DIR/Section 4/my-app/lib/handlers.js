@@ -18,7 +18,19 @@ var handlers = {};
 
 // Index handler
 handlers.index = function(data,callback){
-	callback(undefined,undefined,'html');		// This will make statusCode default to 200, but also would've made body default to either (Empty HTML string) OR (JSON). //
+	// Reject any request that isn't a GET
+	if(data.method == 'get'){
+		// Read in a template as a string
+		helpers.getTemplate('index',function(err,str){
+			if(!err && str){
+				callback(200,str,'html');
+			} else {
+				callback(500,undefined,'html');
+			}
+		});
+	} else {
+		callback(405,undefined,'html');
+	}
 }
 
 /*

@@ -11,6 +11,20 @@ var config = require('./config');
 // Define the handlers
 var handlers = {};
 
+/*
+ * HTML Handlers
+ *
+ */
+
+// Index handler
+handlers.index = function(data,callback){
+	callback(undefined,undefined,'html');		// This will make statusCode default to 200, but also would've made body default to either (Empty HTML string) OR (JSON). //
+}
+
+/*
+ * JSON API Handlers
+ *
+ */
 // Ping Handler
 handlers.ping = function(data,callback){
 	callback(200);

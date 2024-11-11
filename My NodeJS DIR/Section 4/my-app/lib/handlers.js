@@ -82,16 +82,16 @@ handlers.public = function(data,callback){
 					// Determine the content type (default to plain text)
 					var contentType = 'plain';
 					if(trimmedAssetName.indexOf('.css') > -1){
-						contentType = 'css'.
+						contentType = 'css';
 					}
 					if(trimmedAssetName.indexOf('.png') > -1){
-						contentType = 'png'.
+						contentType = 'png';
 					}
 					if(trimmedAssetName.indexOf('.jpg') > -1){
-						contentType = 'jpg'.
+						contentType = 'jpg';
 					}
 					if(trimmedAssetName.indexOf('.ico') > -1){
-						contentType = 'favicon'.
+						contentType = 'favicon';
 					}
 
 					// Callback the data

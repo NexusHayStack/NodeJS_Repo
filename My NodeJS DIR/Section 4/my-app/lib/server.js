@@ -73,6 +73,9 @@ server.unifiedServer = function(req,res){
 		// Choose the handler this request should go to. If one is not found, use the notFound handler.
 		var chosenHandler = typeof(server.router[trimmedPath]) !== 'undefined' ? server.router[trimmedPath] : handlers.notFound;
 
+		// If the request is within the public directory, use the public handler instead
+		chosenHandler = trimmedPath.indexOf('public/') > -1 ? handlers.public : chosenHandler; 
+
 		// Construct the data object to send to the handler
 		var data = {
 			'trimmedPath' : trimmedPath,

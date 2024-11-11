@@ -104,6 +104,28 @@ server.unifiedServer = function(req,res){
 				payloadString = typeof(payload) == 'string' ? payload : '';
 			}
 
+			if(contentType == 'css'){
+				res.setHeader('Content-Type','text/css');
+				payloadString = typeof(payload) == 'string' ? payload : '';
+			}
+			if(contentType == 'png'){
+				res.setHeader('Content-Type','image/png');
+				payloadString = typeof(payload) == 'string' ? payload : '';
+			}
+			if(contentType == 'jpg'){
+				res.setHeader('Content-Type','image/jpeg');
+				payloadString = typeof(payload) == 'string' ? payload : '';
+			}
+			if(contentType == 'favicon'){
+				res.setHeader('Content-Type','image/x-icon');
+				payloadString = typeof(payload) == 'string' ? payload : '';
+			}
+			if(contentType == 'plain'){
+				res.setHeader('Content-Type','text/plain');
+				payloadString = typeof(payload) == 'string' ? payload : '';
+			}
+
+
 			// Send the response-parts that are common to all content-types
 				// Sending a 'Header Content' = json, telling the client browser that server is sending a json type
 			res.writeHead(statusCode);
@@ -144,7 +166,9 @@ server.router = {
 	'ping' : handlers.ping,
 	'api/users' : handlers.users,
 	'api/tokens' : handlers.tokens,
-	'api/checks' : handlers.checks
+	'api/checks' : handlers.checks,
+	'favicon.ico' : handlers.favicon,
+	'public' : handlers.public
 }
 
 // Init script

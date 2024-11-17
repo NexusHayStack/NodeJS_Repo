@@ -59,7 +59,8 @@ app.client.request = function(headers,path,method,querStringObject,payload,callb
 	}
 
 	// When the request comes back, handle the response
-	xhr.onreadystatechange = function(){
+	xhr.onreadystatechange = function(){						// This function is executed each time when state of xhr changes 
+		// Check if request-response cycle is finished or just skip
 		if(xhr.readyState == XMLHttpRequest.DONE){
 			var statusCode = xhr.status;
 			var responseReturned = xhr.responseText;

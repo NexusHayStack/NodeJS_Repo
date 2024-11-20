@@ -174,6 +174,8 @@ helpers.interpolate = function(str,data){
 	// Add the templateGlobals to the data object, appending their key name with "global"
 	for (var keyName in config.templateGlobals){
 		if(config.templateGlobals.hasOwnProperty(keyName)){
+			// (ADDING ADDITIONAL!!!) key-value data (templateGlobals!!) ONTO! existing passed (templateData)
+			// TLDR: Adding... templateData + templateGlobals
 			data['global.'+keyName] = config.templateGlobals[keyName];
 		}
 	}

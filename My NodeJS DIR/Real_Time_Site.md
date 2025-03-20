@@ -32,7 +32,6 @@ A Simple Web App to create and manage checks to monitor site status
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) installed.  
-- [Docker](https://www.docker.com/) installed.  
 
 ### Steps
 

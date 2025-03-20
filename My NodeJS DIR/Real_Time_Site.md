@@ -63,36 +63,36 @@ A Simple Web App to create and manage checks to monitor site status
 
 ## Usage
 1. When on the browser 
-  ![Sight](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 212159.png>)
+  ![Sight](<Section 4/README_Images/Screenshot 2025-03-20 212159.png>)
 
 
   Create an Account
-  ![Sign-Up](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 212323.png>)
+  ![Sign-Up](<Section 4/README_Images/Screenshot 2025-03-20 212323.png>)
 
   OR Sign In
-  ![Sign-In](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 212622.png>)
+  ![Sign-In](<Section 4/README_Images/Screenshot 2025-03-20 212622.png>)
 
 2. Go to your “DASHBOARD” on the menu and create a check (if haven't already)
-  ![Dashboard](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 213113.png>)
+  ![Dashboard](<Section 4/README_Images/Screenshot 2025-03-20 213113.png>)
 
   __*Note: You can only create a maximum of 5 checks__ 
 
 3. Create Checks
-  ![Checks](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 213543.png>)
+  ![Checks](<Section 4/README_Images/Screenshot 2025-03-20 213543.png>)
     **Enter Protocol** (HTTP or HTTPS)
     ![Protocols](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 214925.png>)
 
     **URL**(eg: google.com)
-    ![URL](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 215015.png>)
+    ![URL](<Section 4/README_Images/Screenshot 2025-03-20 215015.png>)
 
     **Success Codes** (What should be the Success Code for the status to be “UP”)
-    ![Codes](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 215221.png>)
+    ![Codes](<Section 4/README_Images/Screenshot 2025-03-20 215221.png>)
 
     **HTTP Method** (GET, PUT, POST, DELETE - If you want to check site health for accessing/reading the site just enter “GET”, and if you want to check site health for when you enter a new data select “PUSH”, “PUT” to edit/write)
-    ![Method](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 215139.png>)
+    ![Method](<Section 4/README_Images/Screenshot 2025-03-20 215139.png>)
     
     **Time Out** (Within how many seconds should the site respond for the status to be "UP")
-    ![TimeOut](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 235552.png>)
+    ![TimeOut](<Section 4/README_Images/Screenshot 2025-03-20 235552.png>)
 
  
 ---

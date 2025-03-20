@@ -80,7 +80,7 @@ A Simple Web App to create and manage checks to monitor site status
 3. Create Checks
   ![Checks](<Section 4/README_Images/Screenshot 2025-03-20 213543.png>)
     **Enter Protocol** (HTTP or HTTPS)
-    ![Protocols](<My NodeJS DIR/Section 4/README_Images/Screenshot 2025-03-20 214925.png>)
+    ![Protocols](<Section 4/README_Images/Screenshot 2025-03-20 214925.png>)
 
     **URL**(eg: google.com)
     ![URL](<Section 4/README_Images/Screenshot 2025-03-20 215015.png>)
